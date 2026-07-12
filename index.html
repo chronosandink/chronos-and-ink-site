@@ -3,26 +3,18 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chronos & Ink Catalogue</title>
+<title>Chronos & Ink Shelf</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
   :root {
-    --paper: #f7f2ea;
-    --surface: #fffdf8;
-    --surface-soft: #fbf7ef;
+    --paper: #ffffff;
+    --surface: #ffffff;
+    --surface-soft: #f8f9fa;
     --ink: #122347;
     --muted: #647393;
     --line: #e1d8ca;
-    --rose: #914653;
-    --rose-dark: #5b2730;
-    --ochre: #9a6b3f;
-    --ochre-dark: #4e321c;
-    --blue: #263d5f;
-    --blue-dark: #111f35;
-    --emerald: #2e5a44;
-    --emerald-dark: #163324;
   }
 
   * { box-sizing: border-box; }
@@ -30,10 +22,7 @@
   body {
     margin: 0;
     min-height: 100vh;
-    background:
-      linear-gradient(rgba(255,255,255,.58), rgba(255,255,255,.58)),
-      repeating-linear-gradient(90deg, rgba(18,35,71,.015) 0 1px, transparent 1px 120px),
-      var(--paper);
+    background: var(--paper);
     color: var(--ink);
     font-family: Inter, system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -225,7 +214,8 @@
     font-family: Fraunces, serif;
     font-size: 54px;
     line-height: 1;
-    color: var(--line);
+    color: var(--ink);
+    opacity: 0.15;
     margin-bottom: 12px;
     font-weight: 500;
   }
@@ -268,7 +258,7 @@
     align-self: flex-start;
   }
 
-  .catalogue-layout {
+  .shelf-layout {
     display: grid;
     grid-template-columns: 260px minmax(0, 1fr);
     gap: 48px;
@@ -318,9 +308,9 @@
     padding-bottom: 28px;
   }
   .book-indicator {
-    width: 12px;
-    height: 60px;
-    border-radius: 3px;
+    width: 8px;
+    height: 48px;
+    border-radius: 4px;
     background: linear-gradient(180deg, var(--strip-a), var(--strip-b));
   }
   .book-main { min-width: 0; }
@@ -430,7 +420,7 @@
     }
     
     .collection-grid { grid-template-columns: 1fr; gap: 40px; }
-    .catalogue-layout { grid-template-columns: 1fr; gap: 32px; }
+    .shelf-layout { grid-template-columns: 1fr; gap: 32px; }
     .filter-panel { position: static; }
     .book-row { grid-template-columns: 1fr; gap: 16px; padding-bottom: 36px; }
     .book-indicator { display: none; }
@@ -443,7 +433,7 @@
 <div class="page">
   <header class="topbar">
     <div class="brand" onclick="navigate('home')" role="button" tabindex="0" aria-label="Go home">
-      <img class="brand-logo-img" src="ChatGPT Image Jul 5, 2026, 04_47_12 PM_2.png" alt="Chronos & Ink Logo">
+      <img class="brand-logo-img" src="logo.png" alt="Chronos & Ink Logo">
       <div>
         <span class="brand-name">Chronos & Ink</span>
         <span class="brand-line">write · preserve · inspire</span>
@@ -454,10 +444,10 @@
     </button>
     <nav class="nav" id="mainNav" aria-label="Primary">
       <button data-nav="home" onclick="handleNav('home')">Home</button>
-      <button data-nav="catalogue" onclick="handleNav('catalogue')">Catalogue</button>
+      <button data-nav="shelf" onclick="handleNav('shelf')">Shelf</button>
       <button data-nav="romance" onclick="handleNav('romance')">Romance</button>
       <button data-nav="levelup" onclick="handleNav('levelup')">Productivity</button>
-      <button data-nav="diaries" onclick="navigate('diaries')">Diaries</button>
+      <button data-nav="diaries" onclick="handleNav('diaries')">Diaries</button>
       <button data-nav="journals" onclick="handleNav('journals')">Journals</button>
     </nav>
   </header>
@@ -474,8 +464,8 @@ const DATA = {
     eyebrow: "A trilogy in three volumes",
     title: "When We",
     intro: "A connected romance series about collision, distance, and choosing what lasts.",
-    colorA: "#914653",
-    colorB: "#5b2730",
+    colorA: "#d97d81",
+    colorB: "#b54a4e",
     books: [
       { title: "When We First Collided", link: "https://kdpbook.link/for/B0GDV7C3ZS", vol: "Vol. I", blurb: "Book 1 of Romance Trilogy – When We" },
       { title: "When We Drifted Apart", link: "https://kdpbook.link/for/B0GRWZ4651", vol: "Vol. II", blurb: "Book 2 of Romance Trilogy – When We" },
@@ -487,8 +477,8 @@ const DATA = {
     eyebrow: "Tactical Productivity Guides",
     title: "Level Up",
     intro: "Short, impactful manuals designed to clear mental friction and sharpen execution.",
-    colorA: "#2e5a44",
-    colorB: "#163324",
+    colorA: "#a78bfa",
+    colorB: "#7c3aed",
     books: [
       { title: "How To Master Focus", link: "https://kdpbook.link/for/B0GRMWG7FP", vol: "Vol. I", blurb: "Your focus isn't broken. You need a deep work system." },
       { title: "How To Stop Procrastination", link: "https://kdpbook.link/for/B0GKY8W2XJ", vol: "Vol. II", blurb: "You aren’t lazy. You just need a system." },
@@ -500,8 +490,8 @@ const DATA = {
     eyebrow: "Personal Archives",
     title: "Diaries",
     intro: "Classic layout structural spaces for deep long-form writing and daily memories.",
-    colorA: "#9a6b3f",
-    colorB: "#4e321c",
+    colorA: "#86efac",
+    colorB: "#16a34a",
     books: [
       { title: "Best Brother Diary", link: "https://kdpbook.link/for/B0H7M5XBGN", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Brothers" },
       { title: "Best Wife Diary", link: "https://kdpbook.link/for/B0H7MQLQ2C", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Wifes" },
@@ -522,8 +512,8 @@ const DATA = {
     eyebrow: "Structured Workspaces",
     title: "Journals",
     intro: "Mindful prompt templates and tactical focus tools designed for modern habits.",
-    colorA: "#263d5f",
-    colorB: "#111f35",
+    colorA: "#f97316",
+    colorB: "#ea580c",
     books: [
       { title: "The 5-Minute Morning Journal", link: "https://kdpbook.link/for/B0GKY8Z4TB", subtitle: "Edition", blurb: "Gratitude - Daily Intention - Daily Affirmation" },
       { title: "The 5-Minute Before Bed Journal", link: "https://kdpbook.link/for/B0GX9BSJWZ", subtitle: "Edition", blurb: "Gratitude - Reflection - Peace" }
@@ -544,7 +534,7 @@ function handleNav(route) {
 }
 
 function navigate(route) {
-  location.hash = "#/" + (route === "home" ? "" : route);
+  location.hash = "#/" + (route === "shelf" ? "shelf" : route === "home" ? "" : route);
 }
 
 function setActive(route) {
@@ -573,7 +563,6 @@ function editorialSpreadCard(num, key, collection) {
   return `
     <article class="editorial-spread" onclick="navigate('${key}')" role="button" tabindex="0">
       <div class="spread-num">${num}</div>
-      <span class="eyebrow">${collection.eyebrow}</span>
       <div class="spread-title-wrap">
         <div class="spread-accent" style="background: linear-gradient(to bottom, ${collection.colorA}, ${collection.colorB})"></div>
         <h3>${collection.title}</h3>
@@ -603,11 +592,10 @@ function renderHome() {
   view.innerHTML = `
     <section class="hero">
       <div>
-        <span class="eyebrow">Official catalogue</span>
         <h1>Stories to read.<br>Pages to keep.</h1>
         <p class="lead">Explore the Chronos & Ink shelf: emotional romance novels, tactical productivity manuals, and structured spaces for daily reflection.</p>
         <div class="hero-actions">
-          <button class="button" onclick="navigate('catalogue')">View Entire Catalogue</button>
+          <button class="button" onclick="navigate('shelf')">View Entire Shelf</button>
           <button class="button secondary" onclick="navigate('romance')">Start Reading Romance</button>
         </div>
       </div>
@@ -616,8 +604,7 @@ function renderHome() {
     <section>
       <div class="section-head">
         <div>
-          <span class="eyebrow">Curated Shelves</span>
-          <h2>The Collections</h2>
+          <h2>Curated Shelves</h2>
           <p>Select a dedicated shelf below to browse dynamic title structures, specific volumes, and physical publishing specs.</p>
         </div>
       </div>
@@ -629,7 +616,7 @@ function renderHome() {
       </div>
     </section>
 
-    ${catalogueSection("Featured Books", "A curated showcase of featured literary volumes and workspaces.", getFeaturedBooks())}
+    ${shelfSection("Featured Books", "A curated showcase of featured literary volumes and workspaces.", getFeaturedBooks())}
   `;
 }
 
@@ -642,12 +629,11 @@ function allBooks() {
   ];
 }
 
-function catalogueSection(title, intro, items = allBooks()) {
+function shelfSection(title, intro, items = allBooks()) {
   return `
     <section>
       <div class="section-head">
         <div>
-          <span class="eyebrow">Index view</span>
           <h2>${title}</h2>
           <p>${intro}</p>
         </div>
@@ -660,8 +646,8 @@ function catalogueSection(title, intro, items = allBooks()) {
   `;
 }
 
-function renderCatalogue(filter = "all") {
-  setActive("catalogue");
+function renderShelf(filter = "all") {
+  setActive("shelf");
   const items = filter === "romance"
     ? DATA.romance.books.map(book => ({ book, collection: DATA.romance }))
     : filter === "levelup"
@@ -673,18 +659,17 @@ function renderCatalogue(filter = "all") {
           : allBooks();
 
   view.innerHTML = `
-    <section class="catalogue-layout">
+    <section class="shelf-layout">
       <aside class="filter-panel">
-        <span class="eyebrow">Sort index</span>
-        <h2>Catalogue</h2>
-        <button class="${filter === "all" ? "active" : ""}" onclick="renderCatalogue('all')">All Books</button>
-        <button class="${filter === "romance" ? "active" : ""}" onclick="renderCatalogue('romance')">Romance Trilogy - When We</button>
-        <button class="${filter === "levelup" ? "active" : ""}" onclick="renderCatalogue('levelup')">Level Up Series</button>
-        <button class="${filter === "diaries" ? "active" : ""}" onclick="renderCatalogue('diaries')">Diaries</button>
-        <button class="${filter === "journals" ? "active" : ""}" onclick="renderCatalogue('journals')">Journals</button>
+        <h2>Shelf</h2>
+        <button class="${filter === "all" ? "active" : ""}" onclick="renderShelf('all')">All Books</button>
+        <button class="${filter === "romance" ? "active" : ""}" onclick="renderShelf('romance')">Romance Trilogy - When We</button>
+        <button class="${filter === "levelup" ? "active" : ""}" onclick="renderShelf('levelup')">Level Up Series</button>
+        <button class="${filter === "diaries" ? "active" : ""}" onclick="renderShelf('diaries')">Diaries</button>
+        <button class="${filter === "journals" ? "active" : ""}" onclick="renderShelf('journals')">Journals</button>
       </aside>
       <div>
-        ${catalogueSection(filter === "all" ? "Master Index" : DATA[filter].title, "Browse individual publications, specs, and online distribution channels.", items)}
+        ${shelfSection(filter === "all" ? "Master Index" : DATA[filter].title, "Browse individual publications, specs, and online distribution channels.", items)}
       </div>
     </section>
   `;
@@ -704,13 +689,13 @@ function renderCollection(key) {
       </div>
       <div class="count">${collection.books.length} items</div>
     </section>
-    ${catalogueSection(collection.label, "Select a title below to view availability, structural descriptions, and ordering platforms.", items)}
+    ${shelfSection(collection.label, "Select a title below to view availability, structural descriptions, and ordering platforms.", items)}
   `;
 }
 
 function router() {
   const route = location.hash.replace("#/", "") || "home";
-  if (route === "catalogue") renderCatalogue();
+  if (route === "shelf") renderShelf();
   else if (route === "romance" || route === "levelup" || route === "diaries" || route === "journals") renderCollection(route);
   else renderHome();
   window.scrollTo(0, 0);
