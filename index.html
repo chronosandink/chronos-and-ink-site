@@ -57,6 +57,10 @@
     height: 52px;
     object-fit: contain;
     flex-shrink: 0;
+    transition: transform 0.3s ease;
+  }
+  .brand:hover .brand-logo-img {
+    transform: rotate(-5deg) scale(1.05);
   }
   .brand-name {
     display: block;
@@ -87,7 +91,7 @@
     cursor: pointer;
     font-weight: 500;
     font-size: 14px;
-    transition: all .2s ease;
+    transition: all .25s ease;
   }
   .nav button:hover,
   .nav button.active {
@@ -109,8 +113,24 @@
     fill: var(--ink);
   }
 
+  /* REFRESH VIEW ROUTE ANIMATION */
   main { padding: 64px 0 100px; }
   
+  .view-animate {
+    animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .hero {
     margin-bottom: 80px;
     padding: 40px 0;
@@ -148,14 +168,17 @@
     font-weight: 600;
     font-size: 15px;
     cursor: pointer;
-    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .button.secondary {
     background: transparent;
     color: var(--ink);
     border-color: var(--ink);
   }
-  .button:hover { transform: translateY(-2px); opacity: 0.95; }
+  .button:hover { 
+    transform: translateY(-2px); 
+    box-shadow: 0 8px 20px rgba(18, 35, 71, 0.12);
+  }
 
   .section-head {
     border-bottom: 1px solid var(--line);
@@ -200,10 +223,7 @@
     position: relative;
     padding-top: 20px;
     cursor: pointer;
-    transition: transform 0.25s ease;
-  }
-  .editorial-spread:hover {
-    transform: translateY(-4px);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .spread-num {
     font-family: Fraunces, serif;
@@ -213,6 +233,8 @@
     opacity: 0.15;
     margin-bottom: 12px;
     font-weight: 500;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    transform-origin: left bottom;
   }
   .spread-title-wrap {
     display: inline-flex;
@@ -225,6 +247,7 @@
     height: 28px;
     border-radius: 2px;
     flex-shrink: 0;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .editorial-spread h3 {
     font-family: Fraunces, serif;
@@ -250,6 +273,22 @@
     border-bottom: 2px solid var(--ink);
     padding-bottom: 4px;
     align-self: flex-start;
+    transition: gap 0.2s ease;
+  }
+  
+  /* EDITORIAL HOVER ANIMATION EFFECT */
+  .editorial-spread:hover {
+    transform: translateY(-4px);
+  }
+  .editorial-spread:hover .spread-num {
+    opacity: 0.28;
+    transform: scale(1.05);
+  }
+  .editorial-spread:hover .spread-accent {
+    transform: scaleY(1.25);
+  }
+  .editorial-spread:hover .editorial-link {
+    gap: 10px;
   }
 
   .shelf-layout {
@@ -300,6 +339,10 @@
     align-items: center;
     border-bottom: 1px solid var(--line);
     padding-bottom: 28px;
+    transition: transform 0.2s ease;
+  }
+  .book-row:hover {
+    transform: translateX(4px);
   }
   .book-indicator {
     width: 8px;
@@ -340,13 +383,14 @@
     font-weight: 600;
     font-size: 14px;
     padding: 0 24px;
-    transition: transform 0.2s ease;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .buy:hover {
-    transform: translateY(-1px);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(18, 35, 71, 0.15);
   }
 
-  /* HIGH CONVERSION FEATURED SHOWCASE GRID */
+  /* HIGH CONVERSION FEATURED SHOWCASE GRID WITH MICRO-ANIMATIONS */
   .featured-showcase-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -361,6 +405,12 @@
     border-radius: 12px;
     background: var(--surface-soft);
     position: relative;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  }
+  .showcase-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--ink);
+    box-shadow: 0 12px 24px rgba(18, 35, 71, 0.06);
   }
   .showcase-badge {
     position: absolute;
@@ -411,8 +461,9 @@
     cursor: pointer;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    transition: color 0.2s ease, transform 0.2s ease;
   }
-  .back:hover { color: var(--ink); }
+  .back:hover { color: var(--ink); transform: translateX(-3px); }
 
   footer {
     border-top: 1px solid var(--line);
@@ -445,7 +496,7 @@
       align-items: flex-start;
       padding: 120px 24px 40px;
       gap: 12px;
-      transition: right 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 95;
     }
     .nav.open {
@@ -493,7 +544,7 @@
     </nav>
   </header>
 
-  <main id="view"></main>
+  <main id="view" class="view-animate"></main>
 
   <footer>Chronos & Ink. Books for reading, journals for remembering.</footer>
 </div>
@@ -582,6 +633,12 @@ function setActive(route) {
   document.querySelectorAll("[data-nav]").forEach(button => {
     button.classList.toggle("active", button.dataset.nav === route || (route === "home" && button.dataset.nav === "home"));
   });
+}
+
+function triggerViewRefresh() {
+  view.classList.remove("view-animate");
+  void view.offsetWidth; // Trigger reflow to restart CSS animation
+  view.classList.add("view-animate");
 }
 
 function bookRow(book, collection) {
@@ -757,6 +814,7 @@ function renderCollection(key) {
 }
 
 function router() {
+  triggerViewRefresh();
   const route = location.hash.replace("#/", "") || "home";
   if (route === "shelf") renderShelf();
   else if (route === "romance" || route === "levelup" || route === "diaries" || route === "journals") renderCollection(route);
