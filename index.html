@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronos &amp; Inks</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,500&family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#faf8f3;
+    --paper-raised:#ffffff;
+    --line: rgba(22,41,74,0.14);
+    --ink:#16294a;
+    --ink-deep:#0d1a30;
+    --ink-dim: rgba(22,41,74,0.62);
+    --gold:#b8945a;
+    --gold-deep:#8f7140;
+    --rose:#8a3f49;
+    --leather:#8a5a34;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:'Jost', sans-serif;
+    -webkit-font-smoothing:antialiased;
+    min-height:100vh;
+  }
+  ::selection{ background:var(--ink); color:var(--paper); }
+  a{ color:inherit; text-decoration:none; }
+
+  #app{ max-width:1080px; margin:0 auto; padding:0 28px; }
+
+  .topbar{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:34px 0 30px; border-bottom:1px solid var(--line);
+  }
+  .brand{ display:flex; align-items:center; gap:14px; cursor:pointer; }
+  .brand img{ height:52px; width:auto; display:block; }
+  .brand-text{ display:flex; flex-direction:column; line-height:1.05; }
+  .brand-name{ font-family:'Jost', sans-serif; font-weight:400; font-size:27px; letter-spacing:0.03em; text-transform:lowercase; color:var(--ink-deep); }
+  .brand-name .amp{ color:var(--gold-deep); }
+  .brand-tag{ font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--gold-deep); margin-top:4px; }
+
+  nav.crumbs{ font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:.06em; color:var(--ink-dim); text-transform:uppercase; }
+  nav.crumbs a:hover{ color:var(--ink); }
+
+  main{ padding:70px 0 90px; min-height:60vh; }
+
+  footer{
+    border-top:1px solid var(--line); padding:26px 0 40px;
+    font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--ink-dim);
+    display:flex; justify-content:space-between; letter-spacing:.04em;
+  }
+
+  /* ---------- home ---------- */
+  .hero{ text-align:center; padding:26px 0 60px; }
+  .hero img.mark{ height:96px; width:auto; margin-bottom:22px; }
+  .hero .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.24em;
+    text-transform:uppercase; color:var(--gold-deep); margin-bottom:16px;
+  }
+  .hero h1{
+    font-family:'Jost', sans-serif; font-weight:400; font-size:clamp(30px,6vw,48px);
+    line-height:1.05; margin:0 0 14px; letter-spacing:.04em; color:var(--ink-deep);
+    text-transform:lowercase;
+  }
+  .hero h1 .amp{ color:var(--gold-deep); }
+  .hero .rule{ width:54px; height:1px; background:var(--ink); margin:0 auto 16px; opacity:.5; }
+  .hero .motto{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.22em;
+    text-transform:uppercase; color:var(--gold-deep); margin:0 0 26px;
+  }
+  .hero p{ font-size:15.5px; color:var(--ink-dim); max-width:440px; margin:0 auto; letter-spacing:.02em; }
+
+  .shelf{ display:grid; grid-template-columns:1fr 1fr; gap:26px; margin-top:12px; }
+  @media (max-width:680px){ .shelf{ grid-template-columns:1fr; } }
+
+  .tile{
+    position:relative; background:var(--paper-raised);
+    border:1px solid var(--line); border-radius:6px;
+    padding:34px 28px 28px; overflow:hidden; cursor:pointer;
+    box-shadow: 0 1px 2px rgba(27,42,74,0.04);
+    transition:transform .35s ease, border-color .35s ease, box-shadow .35s ease;
+  }
+  .tile:hover{ transform:translateY(-4px); border-color:var(--ink); box-shadow:0 14px 30px rgba(27,42,74,0.10); }
+  .tile:focus-visible{ outline:2px solid var(--ink); outline-offset:3px; }
+
+  .tile .stack{ display:flex; gap:10px; margin-bottom:22px; height:150px; align-items:flex-end; }
+  .spine{
+    flex:1; border-radius:3px 3px 0 0; position:relative;
+    box-shadow: inset 4px 0 0 rgba(0,0,0,.18);
+    display:flex; align-items:flex-end; padding:10px 6px;
+  }
+  .spine span{
+    font-family:'JetBrains Mono', monospace; font-size:10px; color:rgba(250,248,243,.85);
+    writing-mode:vertical-rl; letter-spacing:.08em;
+  }
+
+  .tile h2{ font-family:'Fraunces', serif; font-weight:600; font-size:23px; margin:0 0 6px; color:var(--ink-deep); }
+  .tile .meta{
+    font-family:'JetBrains Mono', monospace; font-size:10.5px; color:var(--ink-dim);
+    letter-spacing:.06em; text-transform:uppercase; margin-bottom:10px;
+  }
+  .tile p.desc{ margin:0; color:var(--ink-dim); font-size:14px; }
+  .enter{
+    margin-top:18px; font-family:'JetBrains Mono', monospace; font-size:11.5px;
+    letter-spacing:.06em; color:var(--ink); display:flex; align-items:center; gap:6px;
+  }
+  .enter svg{ transition:transform .3s ease; }
+  .tile:hover .enter svg{ transform:translateX(4px); }
+
+  /* ---------- category page ---------- */
+  .back{
+    display:inline-flex; align-items:center; gap:6px; margin-bottom:34px;
+    font-family:'JetBrains Mono', monospace; font-size:11.5px; letter-spacing:.06em;
+    color:var(--ink-dim); cursor:pointer; text-transform:uppercase;
+  }
+  .back:hover{ color:var(--ink); }
+
+  .cat-head{ margin-bottom:44px; }
+  .cat-head .eyebrow{
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.2em;
+    text-transform:uppercase; margin-bottom:12px;
+  }
+  .cat-head h1{ font-family:'Fraunces', serif; font-weight:600; font-size:clamp(27px,4.5vw,40px); margin:0 0 12px; color:var(--ink-deep); }
+  .cat-head p{ color:var(--ink-dim); max-width:520px; }
+
+  .romance .eyebrow{ color:var(--rose); }
+  .diaries .eyebrow{ color:var(--leather); }
+
+  .trio{ display:grid; grid-template-columns:repeat(3,1fr); gap:24px; }
+  @media (max-width:760px){ .trio{ grid-template-columns:1fr; } }
+
+  .book-card{
+    background:var(--paper-raised); border:1px solid var(--line); border-radius:6px;
+    padding:22px; display:flex; flex-direction:column;
+    box-shadow:0 1px 2px rgba(27,42,74,0.04);
+    transition:border-color .3s ease, transform .3s ease, box-shadow .3s ease;
+  }
+  .book-card:hover{ border-color:var(--rose); transform:translateY(-3px); box-shadow:0 12px 26px rgba(27,42,74,.08); }
+  .diaries .book-card:hover{ border-color:var(--leather); }
+
+  .cover{
+    height:190px; border-radius:3px; margin-bottom:16px; position:relative; overflow:hidden;
+    box-shadow: inset 6px 0 0 rgba(0,0,0,.20);
+    display:flex; align-items:center; justify-content:center; text-align:center; padding:16px;
+  }
+  .cover .vol{
+    position:absolute; top:10px; left:14px; font-family:'JetBrains Mono', monospace;
+    font-size:10px; letter-spacing:.1em; color:rgba(250,248,243,.8); text-transform:uppercase;
+  }
+  .cover .ctitle{
+    font-family:'Fraunces', serif; font-weight:600; font-size:17px; color:#faf8f3;
+    text-shadow:0 2px 8px rgba(0,0,0,.25);
+  }
+
+  .book-card .subtitle{
+    font-family:'JetBrains Mono', monospace; font-size:10px; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--ink-dim); margin-bottom:6px;
+  }
+  .book-card h3{ font-family:'Fraunces', serif; font-size:19px; margin:0 0 8px; font-weight:600; color:var(--ink-deep); }
+  .book-card p.blurb{ font-size:13px; color:var(--ink-dim); margin:0 0 18px; flex:1; }
+
+  .kdp-btn{
+    display:inline-flex; align-items:center; justify-content:center; gap:8px;
+    border:1px solid var(--ink); border-radius:3px; padding:10px 14px;
+    font-family:'JetBrains Mono', monospace; font-size:11px; letter-spacing:.06em;
+    text-transform:uppercase; color:var(--ink); transition:background .25s ease, color .25s ease;
+  }
+  .kdp-btn:hover{ background:var(--ink); color:var(--paper); }
+
+  .grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:20px; }
+  @media (max-width:860px){ .grid{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:460px){ .grid{ grid-template-columns:1fr; } }
+  .grid .cover{ height:130px; }
+  .grid .book-card{ padding:16px; }
+  .grid .book-card h3{ font-size:15px; }
+  .grid .kdp-btn{ padding:8px 10px; font-size:10px; }
+</style>
+</head>
+<body>
+<div id="app">
+  <header class="topbar">
+    <div class="brand" onclick="navigate('home')" tabindex="0" role="button" aria-label="Go home">
+      /* Lines 188-193 omitted */
+    </div>
+    <nav class="crumbs" id="crumbs">Home</nav>
+  </header>
+
+  <main id="view"></main>
+
+  <footer>
+    <span>Chronos &amp; Inks — write. preserve. inspire.</span>
+    <span>Published via Amazon KDP</span>
+  </footer>
+</div>
+
+<script>
+/* ============================================================
+   EDIT YOUR CATALOG HERE
+   - Replace "link" with your real Amazon KDP product URL.
+   - "title" / "subtitle" / "blurb" are shown on the cards.
+   - To add a diary, copy one object inside diaries.books —
+     the grid updates itself automatically.
+   ============================================================ */
+const DATA = {
+  romance: {
+    label: "Romance Trilogy – When We",
+    eyebrow: "A Trilogy in Three Volumes",
+    title: "When We — Romance Trilogy",
+    intro: "One story, told across three volumes. Start the journey with Volume I.",
+    books: [
+      /* Lines 220-223 omitted */
+    ]
+  },
+  diaries: {
+    label: "Diaries Collection",
+    eyebrow: "Journals for Every Hour",
+    title: "The Diaries Collection",
+    intro: "Twelve journals, twelve moods. Pick the one that fits your page.",
+    books: [
+      /* Lines 231-243 omitted */
+    ]
+  }
+};
+
+const view = document.getElementById('view');
+const crumbs = document.getElementById('crumbs');
+const LOGO = document.querySelector('.brand img').getAttribute('src');
+
+function navigate(route){ location.hash = '#/' + (route === 'home' ? '' : route); }
+
+function coverSVG(title, volLabel, accentColorA, accentColorB){
+  return `<div class="cover" style="background:linear-gradient(155deg, ${accentColorA} 0%, ${accentColorB} 100%)">
+    ${volLabel ? `<span class="vol">${volLabel}</span>` : ''}
+    <span class="ctitle">${title}</span>
+  </div>`;
+}
+
+function renderHome(){
+  crumbs.innerHTML = 'Home';
+  view.innerHTML = `
+    <section class="shelf">
+      /* Lines 264-292 omitted */
+    </section>
+  `;
+}
+
+function renderRomance(){
+  crumbs.innerHTML = `<a href="#/">Home</a> / Romance Trilogy`;
+  const d = DATA.romance;
+  view.innerHTML = `
+    <div class="back" onclick="navigate('home')" tabindex="0" role="button">&larr; Back to shelf</div>
+    <section class="cat-head romance">
+      /* Lines 302-305 omitted */
+    </section>
+    <section class="trio">
+      /* Lines 307-316 omitted */
+    </section>
+  `;
+}
+
+function renderDiaries(){
+  crumbs.innerHTML = `<a href="#/">Home</a> / Diaries Collection`;
+  const d = DATA.diaries;
+  view.innerHTML = `
+    <div class="back" onclick="navigate('home')" tabindex="0" role="button">&larr; Back to shelf</div>
+    <section class="cat-head diaries">
+      /* Lines 326-329 omitted */
+    </section>
+    <section class="grid">
+      /* Lines 331-338 omitted */
+    </section>
+  `;
+}
+
+function router(){
+  const route = location.hash.replace('#/', '');
+  if(route === 'romance') renderRomance();
+  else if(route === 'diaries') renderDiaries();
+  else renderHome();
+  window.scrollTo(0,0);
+}
+window.addEventListener('hashchange', router);
+router();
+</script>
+</body>
+</html>
