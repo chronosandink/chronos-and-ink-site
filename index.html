@@ -15,6 +15,10 @@
     --ink: #122347;
     --muted: #647393;
     --line: #e1d8ca;
+    --rose: #b54a4e;
+    --emerald: #16a34a;
+    --purple: #7c3aed;
+    --orange: #ea580c;
   }
 
   * { box-sizing: border-box; }
@@ -111,16 +115,6 @@
     margin-bottom: 80px;
     padding: 40px 0;
   }
-  .eyebrow {
-    color: var(--ink);
-    opacity: 0.8;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: .2em;
-    text-transform: uppercase;
-    display: block;
-    margin-bottom: 16px;
-  }
   h1, h2, h3 { margin: 0; font-weight: 400; }
   h1 {
     font-family: Fraunces, serif;
@@ -161,7 +155,7 @@
     color: var(--ink);
     border-color: var(--ink);
   }
-  .button:hover { transform: translateY(-2px); }
+  .button:hover { transform: translateY(-2px); opacity: 0.95; }
 
   .section-head {
     border-bottom: 1px solid var(--line);
@@ -192,6 +186,7 @@
     letter-spacing: 0.05em;
   }
 
+  /* PREMIUM EDITORIAL SPREAD LAYOUT FOR SHELVES */
   .collection-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -202,9 +197,9 @@
     display: flex;
     flex-direction: column;
     text-align: left;
-    cursor: pointer;
     position: relative;
     padding-top: 20px;
+    cursor: pointer;
     transition: transform 0.25s ease;
   }
   .editorial-spread:hover {
@@ -220,7 +215,7 @@
     font-weight: 500;
   }
   .spread-title-wrap {
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 12px;
     margin-top: 4px;
@@ -247,8 +242,7 @@
   .editorial-link {
     font-size: 13px;
     font-weight: 700;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
+    letter-spacing: 0.05em;
     color: var(--ink);
     display: inline-flex;
     align-items: center;
@@ -311,7 +305,6 @@
     width: 8px;
     height: 48px;
     border-radius: 4px;
-    background: linear-gradient(180deg, var(--strip-a), var(--strip-b));
   }
   .book-main { min-width: 0; }
   .book-row h3 {
@@ -342,16 +335,62 @@
     min-height: 44px;
     border-radius: 999px;
     border: 1px solid var(--ink);
-    background: transparent;
-    color: var(--ink);
-    font-weight: 600;
-    font-size: 14px;
-    padding: 0 20px;
-    transition: all 0.2s ease;
-  }
-  .buy:hover {
     background: var(--ink);
     color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0 24px;
+    transition: transform 0.2s ease;
+  }
+  .buy:hover {
+    transform: translateY(-1px);
+  }
+
+  /* HIGH CONVERSION FEATURED SHOWCASE GRID */
+  .featured-showcase-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 32px;
+  }
+  .showcase-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-soft);
+    position: relative;
+  }
+  .showcase-badge {
+    position: absolute;
+    top: -12px;
+    left: 20px;
+    background: #ffffff;
+    border: 1px solid var(--line);
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .showcase-card h3 {
+    font-family: Fraunces, serif;
+    font-size: 22px;
+    line-height: 1.2;
+    margin: 8px 0 12px;
+    color: var(--ink);
+  }
+  .showcase-card p {
+    margin: 0 0 24px 0;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.5;
+    flex-grow: 1;
+  }
+  .showcase-card .buy {
+    width: 100%;
   }
 
   .detail-hero {
@@ -386,6 +425,7 @@
 
   @media (max-width: 1024px) {
     .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
+    .featured-showcase-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   }
   
   @media (max-width: 840px) {
@@ -420,6 +460,7 @@
     }
     
     .collection-grid { grid-template-columns: 1fr; gap: 40px; }
+    .featured-showcase-grid { grid-template-columns: 1fr; gap: 24px; }
     .shelf-layout { grid-template-columns: 1fr; gap: 32px; }
     .filter-panel { position: static; }
     .book-row { grid-template-columns: 1fr; gap: 16px; padding-bottom: 36px; }
@@ -547,14 +588,27 @@ function bookRow(book, collection) {
   const blurb = book.blurb || "A clean structured workspace for plans, milestones, and personal focus.";
   const label = book.vol || book.subtitle || collection.label;
   return `
-    <article class="book-row" style="--strip-a:${collection.colorA};--strip-b:${collection.colorB}">
-      <div class="book-indicator" aria-hidden="true"></div>
+    <article class="book-row">
+      <div class="book-indicator" style="background: linear-gradient(180deg, ${collection.colorA}, ${collection.colorB})" aria-hidden="true"></div>
       <div class="book-main">
         <div class="meta">${label} &ensp;·&ensp; ${collection.label}</div>
         <h3>${book.title}</h3>
         <p>${blurb}</p>
       </div>
       <a class="buy" href="${book.link}" target="_blank" rel="noopener">Purchase Edition</a>
+    </article>
+  `;
+}
+
+function showcaseCard(item) {
+  return `
+    <article class="showcase-card">
+      <span class="showcase-badge" style="color: ${item.collection.colorB}">${item.collection.title}</span>
+      <div>
+        <h3>${item.book.title}</h3>
+        <p>${item.book.blurb || 'Curated structural workspace.'}</p>
+      </div>
+      <a class="buy" href="${item.book.link}" target="_blank" rel="noopener">Purchase Now</a>
     </article>
   `;
 }
@@ -568,7 +622,7 @@ function editorialSpreadCard(num, key, collection) {
         <h3>${collection.title}</h3>
       </div>
       <p>${collection.intro}</p>
-      <span class="editorial-link">Explore Shelf</span>
+      <span class="editorial-link">Explore Shelf Collection →</span>
     </article>
   `;
 }
@@ -601,7 +655,7 @@ function renderHome() {
       </div>
     </section>
 
-    <section>
+    <section style="margin-bottom: 84px;">
       <div class="section-head">
         <div>
           <h2>Curated Shelves</h2>
@@ -616,7 +670,17 @@ function renderHome() {
       </div>
     </section>
 
-    ${shelfSection("Featured Books", "A curated showcase of featured literary volumes and workspaces.", getFeaturedBooks())}
+    <section>
+      <div class="section-head">
+        <div>
+          <h2>Featured Books</h2>
+          <p>A curated showcase of featured literary volumes and workspaces available immediately.</p>
+        </div>
+      </div>
+      <div class="featured-showcase-grid">
+        ${getFeaturedBooks().map(item => showcaseCard(item)).join("")}
+      </div>
+    </section>
   `;
 }
 
@@ -683,7 +747,6 @@ function renderCollection(key) {
     <div class="back" onclick="navigate('home')" role="button" tabindex="0">← Return to Main Library</div>
     <section class="detail-hero">
       <div>
-        <span class="eyebrow">${collection.eyebrow}</span>
         <h1>${collection.title}</h1>
         <p class="lead">${collection.intro}</p>
       </div>
