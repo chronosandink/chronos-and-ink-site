@@ -637,7 +637,7 @@ function setActive(route) {
 
 function triggerViewRefresh() {
   view.classList.remove("view-animate");
-  void view.offsetWidth; // Trigger reflow to restart CSS animation
+  void view.offsetWidth; 
   view.classList.add("view-animate");
 }
 
@@ -660,7 +660,7 @@ function bookRow(book, collection) {
 function showcaseCard(item) {
   return `
     <article class="showcase-card">
-      <span class="showcase-badge" style="color: ${item.collection.colorB}">${item.collection.title}</span>
+      <span class="showcase-badge" style="color: ${item.collection.colorA}">${item.collection.title}</span>
       <div>
         <h3>${item.book.title}</h3>
         <p>${item.book.blurb || 'Curated structural workspace.'}</p>
@@ -673,7 +673,7 @@ function showcaseCard(item) {
 function editorialSpreadCard(num, key, collection) {
   return `
     <article class="editorial-spread" onclick="navigate('${key}')" role="button" tabindex="0">
-      <div class="spread-num">${num}</div>
+      <div class="spread-num" style="color: var(--ink); opacity: 0.15;">${num}</div>
       <div class="spread-title-wrap">
         <div class="spread-accent" style="background: linear-gradient(to bottom, ${collection.colorA}, ${collection.colorB})"></div>
         <h3>${collection.title}</h3>
@@ -715,6 +715,18 @@ function renderHome() {
     <section style="margin-bottom: 84px;">
       <div class="section-head">
         <div>
+          <h2>Featured Books</h2>
+          <p>A curated showcase of featured literary volumes and workspaces available immediately.</p>
+        </div>
+      </div>
+      <div class="featured-showcase-grid">
+        ${getFeaturedBooks().map(item => showcaseCard(item)).join("")}
+      </div>
+    </section>
+
+    <section>
+      <div class="section-head">
+        <div>
           <h2>Curated Shelves</h2>
           <p>Select a dedicated shelf below to browse dynamic title structures, specific volumes, and physical publishing specs.</p>
         </div>
@@ -724,18 +736,6 @@ function renderHome() {
         ${editorialSpreadCard("02", "levelup", DATA.levelup)}
         ${editorialSpreadCard("03", "diaries", DATA.diaries)}
         ${editorialSpreadCard("04", "journals", DATA.journals)}
-      </div>
-    </section>
-
-    <section>
-      <div class="section-head">
-        <div>
-          <h2>Featured Books</h2>
-          <p>A curated showcase of featured literary volumes and workspaces available immediately.</p>
-        </div>
-      </div>
-      <div class="featured-showcase-grid">
-        ${getFeaturedBooks().map(item => showcaseCard(item)).join("")}
       </div>
     </section>
   `;
@@ -801,7 +801,8 @@ function renderCollection(key) {
   setActive(key);
   const items = collection.books.map(book => ({ book, collection }));
   view.innerHTML = `
-    <div class="back" onclick="navigate('home')" role="button" tabindex="0">← Return to Main Library</div>
+    <div class="back" onclick="navigate('home')" role="button" tabindex="0">
+      <svg viewBox="0 0 24 24" style="fill: #ffffff; width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>← Return to Main Library</div>
     <section class="detail-hero">
       <div>
         <h1>${collection.title}</h1>
