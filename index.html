@@ -21,10 +21,9 @@
     --orange: #ea580c;
   }
 
-  * { box-sizing: border-box; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
-    margin: 0;
     min-height: 100vh;
     background: var(--paper);
     color: var(--ink);
@@ -32,7 +31,7 @@
     -webkit-font-smoothing: antialiased;
   }
   a { color: inherit; text-decoration: none; }
-  button { font: inherit; }
+  button { font: inherit; background: none; border: none; }
 
   .page { max-width: 1200px; margin: 0 auto; padding: 0 40px; position: relative; }
   
@@ -101,8 +100,6 @@
 
   .menu-toggle {
     display: none;
-    background: transparent;
-    border: none;
     cursor: pointer;
     padding: 8px;
     z-index: 110;
@@ -113,7 +110,6 @@
     fill: var(--ink);
   }
 
-  /* REFRESH VIEW ROUTE ANIMATION */
   main { padding: 64px 0 100px; }
   
   .view-animate {
@@ -121,14 +117,8 @@
   }
 
   @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(14px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(14px); }
+    to { opacity: 1; transform: translateY(0); }
   }
 
   .hero {
@@ -209,7 +199,6 @@
     letter-spacing: 0.05em;
   }
 
-  /* PREMIUM EDITORIAL SPREAD LAYOUT FOR SHELVES */
   .collection-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -276,20 +265,10 @@
     transition: gap 0.2s ease;
   }
   
-  /* EDITORIAL HOVER ANIMATION EFFECT */
-  .editorial-spread:hover {
-    transform: translateY(-4px);
-  }
-  .editorial-spread:hover .spread-num {
-    opacity: 0.28;
-    transform: scale(1.05);
-  }
-  .editorial-spread:hover .spread-accent {
-    transform: scaleY(1.25);
-  }
-  .editorial-spread:hover .editorial-link {
-    gap: 10px;
-  }
+  .editorial-spread:hover { transform: translateY(-4px); }
+  .editorial-spread:hover .spread-num { opacity: 0.28; transform: scale(1.05); }
+  .editorial-spread:hover .spread-accent { transform: scaleY(1.25); }
+  .editorial-spread:hover .editorial-link { gap: 10px; }
 
   .shelf-layout {
     display: grid;
@@ -309,8 +288,6 @@
   .filter-panel button {
     width: 100%;
     margin-top: 6px;
-    border: none;
-    background: transparent;
     padding: 10px 0;
     text-align: left;
     color: var(--muted);
@@ -332,9 +309,10 @@
     grid-template-columns: 1fr;
     gap: 24px;
   }
+  
   .book-row {
     display: grid;
-    grid-template-columns: auto minmax(0, 1fr) auto;
+    grid-template-columns: auto auto minmax(0, 1fr) auto;
     gap: 32px;
     align-items: center;
     border-bottom: 1px solid var(--line);
@@ -346,12 +324,35 @@
   }
   .book-indicator {
     width: 8px;
-    height: 48px;
+    height: 60px;
     border-radius: 4px;
   }
+  
+  .book-cover-container-fixed {
+    width: 160px;
+    height: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-shrink: 0;
+    background: transparent;
+  }
+  
+  /* ALL CUSTOM OVERRIDES REMOVED - DISPLAYED EXACTLY AS DELIVERED */
+  .book-cover-thumb {
+    max-width: 100%;
+    max-height: 100%;
+    filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.15));
+    transition: transform 0.2s ease;
+  }
+  
+  .book-row:hover .book-cover-thumb {
+    transform: scale(1.02);
+  }
+  
   .book-main { min-width: 0; }
   .book-row h3 {
-    margin: 6px 0 8px;
+    margin: 4px 0 6px;
     font-family: Fraunces, serif;
     font-size: 24px;
     line-height: 1.2;
@@ -365,32 +366,11 @@
   }
   .book-row p {
     max-width: 660px;
-    margin: 0;
     color: var(--muted);
     line-height: 1.6;
     font-size: 15px;
   }
-  .buy {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    min-height: 44px;
-    border-radius: 999px;
-    border: 1px solid var(--ink);
-    background: var(--ink);
-    color: #fff;
-    font-weight: 600;
-    font-size: 14px;
-    padding: 0 24px;
-    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  }
-  .buy:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 6px 16px rgba(18, 35, 71, 0.15);
-  }
 
-  /* HIGH CONVERSION FEATURED SHOWCASE GRID WITH MICRO-ANIMATIONS */
   .featured-showcase-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -408,9 +388,9 @@
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
   }
   .showcase-card:hover {
-    transform: translateY(-6px);
     border-color: var(--ink);
     box-shadow: 0 12px 24px rgba(18, 35, 71, 0.06);
+    transform: translateY(-6px);
   }
   .showcase-badge {
     position: absolute;
@@ -425,11 +405,28 @@
     text-transform: uppercase;
     letter-spacing: 0.05em;
   }
+  .showcase-cover-wrapper {
+    width: 160px;
+    height: 230px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 12px auto 16px;
+    position: relative;
+  }
+  
+  /* ALL CUSTOM OVERRIDES REMOVED - DISPLAYED EXACTLY AS DELIVERED */
+  .showcase-cover-img {
+    max-width: 100%;
+    max-height: 100%;
+    filter: drop-shadow(0 10px 22px rgba(0, 0, 0, 0.18));
+  }
+  
   .showcase-card h3 {
     font-family: Fraunces, serif;
-    font-size: 22px;
+    font-size: 20px;
     line-height: 1.2;
-    margin: 8px 0 12px;
+    margin: 0 0 8px;
     color: var(--ink);
   }
   .showcase-card p {
@@ -441,6 +438,27 @@
   }
   .showcase-card .buy {
     width: 100%;
+  }
+
+  .buy {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+    min-height: 44px;
+    border-radius: 999px;
+    border: 1px solid var(--ink);
+    background: var(--ink);
+    color: #fff;
+    font-weight: 600;
+    font-size: 14px;
+    padding: 0 24px;
+    transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer;
+  }
+  .buy:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(18, 35, 71, 0.15);
   }
 
   .detail-hero {
@@ -498,24 +516,19 @@
       gap: 12px;
       transition: right 0.4s cubic-bezier(0.16, 1, 0.3, 1);
       z-index: 95;
+      border-radius: 0;
     }
-    .nav.open {
-      right: 0;
-    }
-    .nav button {
-      width: 100%;
-      text-align: left;
-      border-radius: 8px;
-      padding: 14px 20px;
-      font-size: 16px;
-    }
+    .nav.open { right: 0; }
+    .nav button { width: 100%; text-align: left; border-radius: 8px; padding: 14px 20px; font-size: 16px; }
     
     .collection-grid { grid-template-columns: 1fr; gap: 40px; }
     .featured-showcase-grid { grid-template-columns: 1fr; gap: 24px; }
     .shelf-layout { grid-template-columns: 1fr; gap: 32px; }
     .filter-panel { position: static; }
-    .book-row { grid-template-columns: 1fr; gap: 16px; padding-bottom: 36px; }
+    .book-row { grid-template-columns: 1fr; gap: 16px; padding-bottom: 36px; text-align: center; }
     .book-indicator { display: none; }
+    .book-cover-container-fixed { justify-self: center; }
+    .showcase-cover-wrapper { margin: 12px auto 16px; }
     .buy { justify-self: start; width: 100%; }
     .detail-hero { grid-template-columns: 1fr; }
   }
@@ -536,7 +549,7 @@
     </button>
     <nav class="nav" id="mainNav" aria-label="Primary">
       <button data-nav="home" onclick="handleNav('home')">Home</button>
-      <button data-nav="shelf" onclick="handleNav('shelf')">Shelf</button>
+      <button data-nav="shelf" onclick="renderShelf('all')">Shelf</button>
       <button data-nav="romance" onclick="handleNav('romance')">Romance</button>
       <button data-nav="levelup" onclick="handleNav('levelup')">Productivity</button>
       <button data-nav="diaries" onclick="handleNav('diaries')">Diaries</button>
@@ -559,9 +572,9 @@ const DATA = {
     colorA: "#d97d81",
     colorB: "#b54a4e",
     books: [
-      { title: "When We First Collided", link: "https://kdpbook.link/for/B0GDV7C3ZS", vol: "Vol. I", blurb: "Book 1 of Romance Trilogy – When We" },
-      { title: "When We Drifted Apart", link: "https://kdpbook.link/for/B0GRWZ4651", vol: "Vol. II", blurb: "Book 2 of Romance Trilogy – When We" },
-      { title: "When We Choose Forever", link: "https://kdpbook.link/for/B0H58KDSPF", vol: "Vol. III", blurb: "Book 3 of Romance Trilogy - WhenWe" }
+      { title: "When We First Collided", link: "https://kdpbook.link/for/B0GDV7C3ZS", vol: "Vol. I", blurb: "Book 1 of Romance Trilogy – When We", image: "images/WhenWeFirstCollided.jpg" },
+      { title: "When We Drifted Apart", link: "https://kdpbook.link/for/B0GRWZ4651", vol: "Vol. II", blurb: "Book 2 of Romance Trilogy – When We", image: "images/WhenWeDriftedApart.jpg" },
+      { title: "When We Choose Forever", link: "https://kdpbook.link/for/B0H58KDSPF", vol: "Vol. III", blurb: "Book 3 of Romance Trilogy - WhenWe", image: "images/WhenWeChooseFirever.jpg" }
     ]
   },
   levelup: {
@@ -572,9 +585,9 @@ const DATA = {
     colorA: "#a78bfa",
     colorB: "#7c3aed",
     books: [
-      { title: "How To Master Focus", link: "https://kdpbook.link/for/B0GRMWG7FP", vol: "Vol. I", blurb: "Your focus isn't broken. You need a deep work system." },
-      { title: "How To Stop Procrastination", link: "https://kdpbook.link/for/B0GKY8W2XJ", vol: "Vol. II", blurb: "You aren’t lazy. You just need a system." },
-      { title: "How to Drive Manifestation", link: "https://kdpbook.link/for/B0GXS7HP3V", vol: "Vol. III", blurb: "Universe isn’t ignoring you. You need true alignment." }
+      { title: "How To Master Focus", link: "https://kdpbook.link/for/B0GRMWG7FP", vol: "Vol. I", blurb: "Your focus isn't broken. You need a deep work system.", image: "images/HowToMasterFocus.jpg" },
+      { title: "How To Stop Procrastination", link: "https://kdpbook.link/for/B0GKY8W2XJ", vol: "Vol. II", blurb: "You aren’t lazy. You just need a system.", image: "images/HowToStopProcrastination.jpg" },
+      { title: "How to Drive Manifestation", link: "https://kdpbook.link/for/B0GXS7HP3V", vol: "Vol. III", blurb: "Universe isn’t ignoring you. You need true alignment.", image: "images/HowToDriveManifestation.jpg" }
     ]
   },
   diaries: {
@@ -584,19 +597,20 @@ const DATA = {
     intro: "Classic layout structural spaces for deep long-form writing and daily memories.",
     colorA: "#86efac",
     colorB: "#16a34a",
+    isDiaryCollection: true,
     books: [
-      { title: "Best Brother Diary", link: "https://kdpbook.link/for/B0H7M5XBGN", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Brothers" },
-      { title: "Best Wife Diary", link: "https://kdpbook.link/for/B0H7MQLQ2C", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Wifes" },
-      { title: "Mother's Day Diary", link: "https://kdpbook.link/for/B0H6SM91XC", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Moms" },
-      { title: "Best Husband Diary", link: "https://kdpbook.link/for/B0H7MTZJR3", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Husbands" },
-      { title: "Best Father Diary", link: "https://kdpbook.link/for/B0H7MJ3JMF", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Fathers" },
-      { title: "Best Sister Diary", link: "https://kdpbook.link/for/B0H7MC81CX", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Sisters" },
-      { title: "Father's Day Diary", link: "https://kdpbook.link/for/B0H7MFWSZJ", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Dads" },
-      { title: "Best Mother Diary", link: "https://kdpbook.link/for/B0H7MFFKS3", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Mothers" },
-      { title: "Best Daughter Diary", link: "https://kdpbook.link/for/B0H8DBKD5C", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Daughter" },
-      { title: "Best Son Diary", link: "https://kdpbook.link/for/B0H83T55JQ", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Son" },
-      { title: "He Knew He Would", link: "https://kdpbook.link/for/B0GWC65TLB", subtitle: "Edition", blurb: "Diary for him" },
-      { title: "She Believed She Could", link: "https://kdpbook.link/for/B0GVJM3YGC", subtitle: "Edition", blurb: "Diary for her" }
+      { title: "Best Brother Diary", link: "https://kdpbook.link/for/B0H7M5XBGN", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Brothers", image: "images/BestBrother.png" },
+      { title: "Best Wife Diary", link: "https://kdpbook.link/for/B0H7MQLQ2C", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Wifes", image: "images/BestWife.png" },
+      { title: "Mother's Day Diary", link: "https://kdpbook.link/for/B0H6SM91XC", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Moms", image: "images/HappyMothersDay.png" },
+      { title: "Best Husband Diary", link: "https://kdpbook.link/for/B0H7MTZJR3", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Husbands", image: "images/BestHusband.png" },
+      { title: "Best Father Diary", link: "https://kdpbook.link/for/B0H7MJ3JMF", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Fathers", image: "images/BestFather.png" },
+      { title: "Best Sister Diary", link: "https://kdpbook.link/for/B0H7MC81CX", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Sisters", image: "images/BestSister.png" },
+      { title: "Father's Day Diary", link: "https://kdpbook.link/for/B0H7MFWSZJ", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Dads", image: "images/HappyFathersDay.png" },
+      { title: "Best Mother Diary", link: "https://kdpbook.link/for/B0H7MFFKS3", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Mothers", image: "images/BestMother.png" },
+      { title: "Best Daughter Diary", link: "https://kdpbook.link/for/B0H8DBKD5C", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Daughter", image: "images/BestDaughter.png" },
+      { title: "Best Son Diary", link: "https://kdpbook.link/for/B0H83T55JQ", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Son", image: "images/BestSon.png" },
+      { title: "He Knew He Would", link: "https://kdpbook.link/for/B0GWC65TLB", subtitle: "Edition", blurb: "Diary for him", image: "images/HeKnewHeWould.png" },
+      { title: "She Believed She Could", link: "https://kdpbook.link/for/B0GVJM3YGC", subtitle: "Edition", blurb: "Diary for her", image: "images/SheBelievedSheCould.png" }
     ]
   },
   journals: {
@@ -607,8 +621,8 @@ const DATA = {
     colorA: "#f97316",
     colorB: "#ea580c",
     books: [
-      { title: "The 5-Minute Morning Journal", link: "https://kdpbook.link/for/B0GKY8Z4TB", subtitle: "Edition", blurb: "Gratitude - Daily Intention - Daily Affirmation" },
-      { title: "The 5-Minute Before Bed Journal", link: "https://kdpbook.link/for/B0GX9BSJWZ", subtitle: "Edition", blurb: "Gratitude - Reflection - Peace" }
+      { title: "The 5-Minute Morning Journal", link: "https://kdpbook.link/for/B0GKY8Z4TB", subtitle: "Edition", blurb: "Gratitude - Daily Intention - Daily Affirmation", image: "images/The5MinuteMorningJournal.png" },
+      { title: "The 5-Minute Before Bed Journal", link: "https://kdpbook.link/for/B0GX9BSJWZ", subtitle: "Edition", blurb: "Gratitude - Reflection - Peace", image: "images/The5MinuteBeforeBedJournal.png" }
     ]
   }
 };
@@ -616,18 +630,9 @@ const DATA = {
 const view = document.getElementById("view");
 const nav = document.getElementById("mainNav");
 
-function toggleMenu() {
-  nav.classList.toggle("open");
-}
-
-function handleNav(route) {
-  nav.classList.remove("open");
-  navigate(route);
-}
-
-function navigate(route) {
-  location.hash = "#/" + (route === "shelf" ? "shelf" : route === "home" ? "" : route);
-}
+function toggleMenu() { nav.classList.toggle("open"); }
+function handleNav(route) { nav.classList.remove("open"); navigate(route); }
+function navigate(route) { location.hash = "#/" + (route === "shelf" ? "shelf" : route === "home" ? "" : route); }
 
 function setActive(route) {
   document.querySelectorAll("[data-nav]").forEach(button => {
@@ -644,9 +649,14 @@ function triggerViewRefresh() {
 function bookRow(book, collection) {
   const blurb = book.blurb || "A clean structured workspace for plans, milestones, and personal focus.";
   const label = book.vol || book.subtitle || collection.label;
+  const coverSrc = book.image || "logo.png";
+  const diaryClass = collection.isDiaryCollection ? 'is-diary' : '';
   return `
-    <article class="book-row">
+    <article class="book-row ${diaryClass}">
       <div class="book-indicator" style="background: linear-gradient(180deg, ${collection.colorA}, ${collection.colorB})" aria-hidden="true"></div>
+      <div class="book-cover-container-fixed">
+        <img class="book-cover-thumb" src="${coverSrc}" alt="${book.title} Cover Mockup">
+      </div>
       <div class="book-main">
         <div class="meta">${label} &ensp;·&ensp; ${collection.label}</div>
         <h3>${book.title}</h3>
@@ -658,9 +668,14 @@ function bookRow(book, collection) {
 }
 
 function showcaseCard(item) {
+  const coverSrc = item.book.image || "logo.png";
+  const diaryClass = item.collection.isDiaryCollection ? 'is-diary' : '';
   return `
-    <article class="showcase-card">
+    <article class="showcase-card ${diaryClass}">
       <span class="showcase-badge" style="color: ${item.collection.colorA}">${item.collection.title}</span>
+      <div class="showcase-cover-wrapper">
+        <img class="showcase-cover-img" src="${coverSrc}" alt="${item.book.title} Cover Display">
+      </div>
       <div>
         <h3>${item.book.title}</h3>
         <p>${item.book.blurb || 'Curated structural workspace.'}</p>
