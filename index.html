@@ -805,7 +805,7 @@ function renderShelf(filter = "all") {
         <button class="${filter === "journals" ? "active" : ""}" onclick="renderShelf('journals')">Journals</button>
       </aside>
       <div>
-        ${shelfSection(filter === "all" ? "Master Index" : DATA[filter].title, "Browse individual publications, specs, and online distribution channels.", items)}
+        ${shelfSection(filter === "all" ? "All Books" : DATA[filter].title, "Browse individual publications, specs, and online distribution channels.", items)}
       </div>
     </section>
   `;
