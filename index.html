@@ -2,8 +2,20 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Chronos & Ink Shelf</title>
+
+<!-- Favicon & PWA / App Icons -->
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="apple-touch-icon" href="logo.png">
+<meta name="theme-color" content="#122347">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Chronos & Ink">
+
+<!-- Web App Manifest for "Add as App" -->
+<link rel="manifest" href="data:application/manifest+json,%7B%22name%22%3A%22Chronos%20%26%20Ink%22%2C%22short_name%22%3A%22Chronos%20%26%20Ink%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23ffffff%22%2C%22theme_color%22%3A%22%23122347%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22logo.png%22%2C%22sizes%22%3A%22192x192%22%2C%22type%22%3A%22image%2Fpng%22%7D%5D%7D">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -25,10 +37,12 @@
   html { scroll-behavior: smooth; }
   body {
     min-height: 100vh;
+    min-height: 100dvh;
     background: var(--paper);
     color: var(--ink);
     font-family: Inter, system-ui, -apple-system, sans-serif;
     -webkit-font-smoothing: antialiased;
+    padding-bottom: env(safe-area-inset-bottom, 20px);
   }
   a { color: inherit; text-decoration: none; }
   button { font: inherit; background: none; border: none; }
@@ -110,7 +124,10 @@
     fill: var(--ink);
   }
 
-  main { padding: 64px 0 100px; }
+  main { 
+    padding: 64px 0 120px; 
+    padding-bottom: calc(120px + env(safe-area-inset-bottom, 20px));
+  }
   
   .view-animate {
     animation: fadeInUp 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
@@ -199,6 +216,29 @@
     letter-spacing: 0.05em;
   }
 
+  /* Subsection Header Styling */
+  .subsection-header {
+    margin-top: 32px;
+    margin-bottom: 28px;
+    padding-left: 18px;
+    border-left: 4px solid var(--ink);
+  }
+  .subsection-title {
+    font-family: Fraunces, serif;
+    font-size: clamp(26px, 3.2vw, 34px);
+    line-height: 1.2;
+    color: var(--ink);
+    font-weight: 500;
+    letter-spacing: -0.01em;
+  }
+  .subsection-intro {
+    color: var(--muted);
+    font-size: 16px;
+    margin-top: 8px;
+    line-height: 1.6;
+    max-width: 720px;
+  }
+
   .collection-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -272,8 +312,8 @@
 
   .shelf-layout {
     display: grid;
-    grid-template-columns: 260px minmax(0, 1fr);
-    gap: 48px;
+    grid-template-columns: 240px minmax(0, 1fr);
+    gap: 40px;
   }
   .filter-panel {
     position: sticky;
@@ -304,41 +344,56 @@
     padding-left: 6px;
   }
   
+  /* WEB 4-IN-A-ROW GRID SYSTEM FOR BOOKS */
   .books-grid {
     display: grid;
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 24px;
+    margin-bottom: 32px;
   }
   
-  .book-row {
-    display: grid;
-    grid-template-columns: auto auto minmax(0, 1fr) auto;
-    gap: 32px;
-    align-items: center;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 28px;
-    transition: transform 0.2s ease;
+  /* SHELF VIEW WITH SIDEBAR: ADJUST TO 3 COLS FOR PERFECT PROPORTIONS */
+  .shelf-layout .books-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
   }
-  .book-row:hover {
-    transform: translateX(4px);
+  
+  .book-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    background: var(--surface-soft);
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.3s ease, box-shadow 0.3s ease;
   }
-  .book-indicator {
-    width: 8px;
-    height: 60px;
-    border-radius: 4px;
+  
+  .book-card:hover {
+    border-color: var(--ink);
+    box-shadow: 0 12px 24px rgba(18, 35, 71, 0.06);
+    transform: translateY(-5px);
+  }
+  
+  .book-card-indicator {
+    position: absolute;
+    top: 0;
+    left: 20px;
+    right: 20px;
+    height: 4px;
+    border-radius: 0 0 4px 4px;
   }
   
   .book-cover-container-fixed {
-    width: 160px;
-    height: 230px;
+    width: 100%;
+    height: 220px;
     display: flex;
     justify-content: center;
     align-items: center;
-    flex-shrink: 0;
-    background: transparent;
+    margin: 12px 0 16px;
+    position: relative;
   }
   
-  /* ALL CUSTOM OVERRIDES REMOVED - DISPLAYED EXACTLY AS DELIVERED */
   .book-cover-thumb {
     max-width: 100%;
     max-height: 100%;
@@ -346,35 +401,44 @@
     transition: transform 0.2s ease;
   }
   
-  .book-row:hover .book-cover-thumb {
-    transform: scale(1.02);
+  .book-card:hover .book-cover-thumb {
+    transform: scale(1.03);
   }
   
-  .book-main { min-width: 0; }
-  .book-row h3 {
-    margin: 4px 0 6px;
-    font-family: Fraunces, serif;
-    font-size: 24px;
-    line-height: 1.2;
+  .book-main { 
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    margin-bottom: 20px;
   }
-  .book-row .meta {
+  
+  .book-card h3 {
+    margin: 6px 0 8px;
+    font-family: Fraunces, serif;
+    font-size: 19px;
+    line-height: 1.25;
+    color: var(--ink);
+  }
+  
+  .book-card .meta {
     color: var(--muted);
-    font-size: 11px;
+    font-size: 10px;
     font-weight: 700;
-    letter-spacing: .12em;
+    letter-spacing: .1em;
     text-transform: uppercase;
   }
-  .book-row p {
-    max-width: 660px;
+  
+  .book-card p {
     color: var(--muted);
-    line-height: 1.6;
-    font-size: 15px;
+    line-height: 1.5;
+    font-size: 13px;
+    margin-top: 4px;
   }
 
   .featured-showcase-grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 32px;
+    gap: 24px;
   }
   .showcase-card {
     display: flex;
@@ -406,8 +470,8 @@
     letter-spacing: 0.05em;
   }
   .showcase-cover-wrapper {
-    width: 160px;
-    height: 230px;
+    width: 100%;
+    height: 220px;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -415,7 +479,6 @@
     position: relative;
   }
   
-  /* ALL CUSTOM OVERRIDES REMOVED - DISPLAYED EXACTLY AS DELIVERED */
   .showcase-cover-img {
     max-width: 100%;
     max-height: 100%;
@@ -424,20 +487,17 @@
   
   .showcase-card h3 {
     font-family: Fraunces, serif;
-    font-size: 20px;
-    line-height: 1.2;
+    font-size: 19px;
+    line-height: 1.25;
     margin: 0 0 8px;
     color: var(--ink);
   }
   .showcase-card p {
-    margin: 0 0 24px 0;
+    margin: 0 0 20px 0;
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
     line-height: 1.5;
     flex-grow: 1;
-  }
-  .showcase-card .buy {
-    width: 100%;
   }
 
   .buy {
@@ -445,14 +505,15 @@
     align-items: center;
     justify-content: center;
     white-space: nowrap;
-    min-height: 44px;
+    width: 100%;
+    min-height: 42px;
     border-radius: 999px;
     border: 1px solid var(--ink);
     background: var(--ink);
     color: #fff;
     font-weight: 600;
-    font-size: 14px;
-    padding: 0 24px;
+    font-size: 13px;
+    padding: 0 16px;
     transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     cursor: pointer;
   }
@@ -483,18 +544,79 @@
   }
   .back:hover { color: var(--ink); transform: translateX(-3px); }
 
+  /* App Install Smart Banner */
+  .pwa-banner {
+    position: fixed;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    right: 20px;
+    left: 20px;
+    max-width: 420px;
+    margin-left: auto;
+    background: var(--ink);
+    color: #fff;
+    padding: 16px 20px;
+    border-radius: 16px;
+    box-shadow: 0 16px 36px rgba(18, 35, 71, 0.3);
+    display: none;
+    align-items: center;
+    gap: 16px;
+    z-index: 1000;
+    animation: fadeInUp 0.4s ease forwards;
+  }
+  .pwa-banner img {
+    width: 44px;
+    height: 44px;
+    border-radius: 8px;
+    object-fit: contain;
+  }
+  .pwa-banner .pwa-info {
+    flex-grow: 1;
+  }
+  .pwa-banner .pwa-title {
+    font-weight: 600;
+    font-size: 14px;
+  }
+  .pwa-banner .pwa-sub {
+    font-size: 12px;
+    color: #d1d9e6;
+    margin-top: 2px;
+  }
+  .pwa-banner .pwa-btn {
+    background: #fff;
+    color: var(--ink);
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .pwa-banner .pwa-close {
+    color: #fff;
+    opacity: 0.6;
+    cursor: pointer;
+    font-size: 18px;
+    padding: 4px;
+  }
+
   footer {
     border-top: 1px solid var(--line);
-    padding: 40px 0;
+    padding: 40px 0 calc(40px + env(safe-area-inset-bottom, 0px));
     color: var(--muted);
     font-size: 14px;
     text-align: center;
     margin-top: 60px;
   }
 
+  /* RESPONSIVE LAYOUTS */
+  @media (max-width: 1120px) {
+    .books-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .shelf-layout .books-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  
   @media (max-width: 1024px) {
     .collection-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 36px; }
     .featured-showcase-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
+    .books-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
   }
   
   @media (max-width: 840px) {
@@ -507,6 +629,7 @@
       right: -100%;
       width: 280px;
       height: 100vh;
+      height: 100dvh;
       background: var(--surface);
       border-left: 1px solid var(--line);
       box-shadow: -10px 0 30px rgba(0,0,0,0.05);
@@ -525,11 +648,10 @@
     .featured-showcase-grid { grid-template-columns: 1fr; gap: 24px; }
     .shelf-layout { grid-template-columns: 1fr; gap: 32px; }
     .filter-panel { position: static; }
-    .book-row { grid-template-columns: 1fr; gap: 16px; padding-bottom: 36px; text-align: center; }
-    .book-indicator { display: none; }
-    .book-cover-container-fixed { justify-self: center; }
-    .showcase-cover-wrapper { margin: 12px auto 16px; }
-    .buy { justify-self: start; width: 100%; }
+    
+    /* MOBILE STACK: 1 BOOK CARD PER LINE */
+    .books-grid { grid-template-columns: 1fr; gap: 20px; }
+    .shelf-layout .books-grid { grid-template-columns: 1fr; }
     .detail-hero { grid-template-columns: 1fr; }
   }
 </style>
@@ -551,9 +673,9 @@
       <button data-nav="home" onclick="handleNav('home')">Home</button>
       <button data-nav="shelf" onclick="renderShelf('all')">Shelf</button>
       <button data-nav="romance" onclick="handleNav('romance')">Romance</button>
-      <button data-nav="levelup" onclick="handleNav('levelup')">Productivity</button>
+      <button data-nav="indian" onclick="handleNav('indian')">Indian</button>
+      <button data-nav="selfhelp" onclick="handleNav('selfhelp')">Self Help</button>
       <button data-nav="diaries" onclick="handleNav('diaries')">Diaries</button>
-      <button data-nav="journals" onclick="handleNav('journals')">Journals</button>
     </nav>
   </header>
 
@@ -562,67 +684,109 @@
   <footer>&copy; Chronos & Ink. Beautifully bound reading editions and structured archives.</footer>
 </div>
 
+<!-- App Install Smart Banner -->
+<div id="pwaBanner" class="pwa-banner">
+  <img src="logo.png" alt="App Icon">
+  <div class="pwa-info">
+    <div class="pwa-title">Chronos & Ink App</div>
+    <div class="pwa-sub">Add to your home screen</div>
+  </div>
+  <button class="pwa-btn" id="pwaInstallBtn" onclick="installPWA()">Install</button>
+  <button class="pwa-close" onclick="closePwaBanner()">✕</button>
+</div>
+
 <script>
 const DATA = {
   romance: {
-    label: "Romance Trilogy",
-    eyebrow: "A trilogy in three volumes",
-    title: "When We",
-    intro: "A connected romance series about collision, distance, and choosing what lasts.",
+    title: "Romance",
+    intro: "A connected world of collision, distance, and choosing what lasts.",
     colorA: "#d97d81",
     colorB: "#b54a4e",
-    books: [
-      { title: "When We First Collided", link: "https://kdpbook.link/for/B0GDV7C3ZS", vol: "Vol. I", blurb: "Book 1 of Romance Trilogy – When We", image: "images/WhenWeFirstCollided.jpg" },
-      { title: "When We Drifted Apart", link: "https://kdpbook.link/for/B0GRWZ4651", vol: "Vol. II", blurb: "Book 2 of Romance Trilogy – When We", image: "images/WhenWeDriftedApart.jpg" },
-      { title: "When We Choose Forever", link: "https://kdpbook.link/for/B0H58KDSPF", vol: "Vol. III", blurb: "Book 3 of Romance Trilogy - WhenWe", image: "images/WhenWeChooseFirever.jpg" }
+    subsections: [
+      {
+        title: "When We Romance Trilogy",
+        intro: "A connected romance series about collision, distance, and choosing what lasts.",
+        books: [
+          { title: "When We First Collided", link: "https://kdpbook.link/for/B0GDV7C3ZS", vol: "Vol. I", blurb: "Book 1 of Romance Trilogy – When We", image: "images/WhenWeFirstCollided.jpg" },
+          { title: "When We Drifted Apart", link: "https://kdpbook.link/for/B0GRWZ4651", vol: "Vol. II", blurb: "Book 2 of Romance Trilogy – When We", image: "images/WhenWeDriftedApart.jpg" },
+          { title: "When We Choose Forever", link: "https://kdpbook.link/for/B0H58KDSPF", vol: "Vol. III", blurb: "Book 3 of Romance Trilogy - WhenWe", image: "images/WhenWeChooseFirever.jpg" }
+        ]
+      }
     ]
   },
-  levelup: {
-    label: "Level Up Series",
-    eyebrow: "Tactical Productivity Guides",
-    title: "Level Up",
-    intro: "Short, impactful manuals designed to clear mental friction and sharpen execution.",
+  indian: {
+    title: "Indian",
+    intro: "Captivating contemporary stories rooted in Indian culture and modern narratives.",
+    colorA: "#f97316",
+    colorB: "#ea580c",
+    subsections: [
+      {
+        title: "Contemporary Indian Stories",
+        intro: "Immersive romance and drama set against modern Indian lifestyles.",
+        books: [
+          { title: "Salty Kiss", link: "https://kdpbook.link/for/B0HDM39QLS", subtitle: "Edition", blurb: "An Indian contemporary romance story", image: "images/SaltyKiss.jpg" },
+          { title: "Rebooting Raya", link: "https://kdpbook.link/for/B0HF3S8M7D", subtitle: "Edition", blurb: "A modern Indian narrative", image: "images/RebootingRaya.jpg" }
+        ]
+      }
+    ]
+  },
+  selfhelp: {
+    title: "Self Help",
+    intro: "Tactical guides, mindful journals, and daily affirmation tools.",
     colorA: "#a78bfa",
     colorB: "#7c3aed",
-    books: [
-      { title: "How To Master Focus", link: "https://kdpbook.link/for/B0GRMWG7FP", vol: "Vol. I", blurb: "Your focus isn't broken. You need a deep work system.", image: "images/HowToMasterFocus.jpg" },
-      { title: "How To Stop Procrastination", link: "https://kdpbook.link/for/B0GKY8W2XJ", vol: "Vol. II", blurb: "You aren’t lazy. You just need a system.", image: "images/HowToStopProcrastination.jpg" },
-      { title: "How to Drive Manifestation", link: "https://kdpbook.link/for/B0GXS7HP3V", vol: "Vol. III", blurb: "Universe isn’t ignoring you. You need true alignment.", image: "images/HowToDriveManifestation.jpg" }
+    subsections: [
+      {
+        title: "How To Series",
+        intro: "Short, impactful manuals designed to clear mental friction and sharpen execution.",
+        books: [
+          { title: "How To Master Focus", link: "https://kdpbook.link/for/B0GRMWG7FP", vol: "Vol. I", blurb: "Your focus isn't broken. You need a deep work system.", image: "images/HowToMasterFocus.jpg" },
+          { title: "How To Stop Procrastination", link: "https://kdpbook.link/for/B0GKY8W2XJ", vol: "Vol. II", blurb: "You aren't lazy. You just need a system.", image: "images/HowToStopProcrastination.jpg" },
+          { title: "How to Drive Manifestation", link: "https://kdpbook.link/for/B0GXS7HP3V", vol: "Vol. III", blurb: "Universe isn't ignoring you. You need true alignment.", image: "images/HowToDriveManifestation.jpg" }
+        ]
+      },
+      {
+        title: "Know Your Series",
+        intro: "Daily affirmation frameworks for inner clarity and alignment.",
+        books: [
+          { title: "Know Your Affirmation", link: "https://kdpbook.link/for/B0HF4HFTCX", subtitle: "Edition", blurb: "Discover powerful affirmations for daily practice", image: "images/KnowYourAffirmation.jpg" }
+        ]
+      },
+      {
+        title: "Journals",
+        intro: "Mindful prompt templates and tactical focus tools designed for modern habits.",
+        books: [
+          { title: "The 5-Minute Morning Journal", link: "https://kdpbook.link/for/B0GKY8Z4TB", subtitle: "Edition", blurb: "Gratitude - Daily Intention - Daily Affirmation", image: "images/The5MinuteMorningJournal.png" },
+          { title: "The 5-Minute Before Bed Journal", link: "https://kdpbook.link/for/B0GX9BSJWZ", subtitle: "Edition", blurb: "Gratitude - Reflection - Peace", image: "images/The5MinuteBeforeBedJournal.png" }
+        ]
+      }
     ]
   },
   diaries: {
-    label: "Diaries Collection",
-    eyebrow: "Personal Archives",
-    title: "Diaries",
+    title: "Diaries Collection",
     intro: "Classic layout structural spaces for deep long-form writing and daily memories.",
     colorA: "#86efac",
     colorB: "#16a34a",
     isDiaryCollection: true,
-    books: [
-      { title: "Best Brother Diary", link: "https://kdpbook.link/for/B0H7M5XBGN", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Brothers", image: "images/BestBrother.png" },
-      { title: "Best Wife Diary", link: "https://kdpbook.link/for/B0H7MQLQ2C", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Wifes", image: "images/BestWife.png" },
-      { title: "Mother's Day Diary", link: "https://kdpbook.link/for/B0H6SM91XC", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Moms", image: "images/HappyMothersDay.png" },
-      { title: "Best Husband Diary", link: "https://kdpbook.link/for/B0H7MTZJR3", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Husbands", image: "images/BestHusband.png" },
-      { title: "Best Father Diary", link: "https://kdpbook.link/for/B0H7MJ3JMF", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Fathers", image: "images/BestFather.png" },
-      { title: "Best Sister Diary", link: "https://kdpbook.link/for/B0H7MC81CX", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Sisters", image: "images/BestSister.png" },
-      { title: "Father's Day Diary", link: "https://kdpbook.link/for/B0H7MFWSZJ", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Dads", image: "images/HappyFathersDay.png" },
-      { title: "Best Mother Diary", link: "https://kdpbook.link/for/B0H7MFFKS3", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Mothers", image: "images/BestMother.png" },
-      { title: "Best Daughter Diary", link: "https://kdpbook.link/for/B0H8DBKD5C", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Daughter", image: "images/BestDaughter.png" },
-      { title: "Best Son Diary", link: "https://kdpbook.link/for/B0H83T55JQ", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Son", image: "images/BestSon.png" },
-      { title: "He Knew He Would", link: "https://kdpbook.link/for/B0GWC65TLB", subtitle: "Edition", blurb: "Diary for him", image: "images/HeKnewHeWould.png" },
-      { title: "She Believed She Could", link: "https://kdpbook.link/for/B0GVJM3YGC", subtitle: "Edition", blurb: "Diary for her", image: "images/SheBelievedSheCould.png" }
-    ]
-  },
-  journals: {
-    label: "Journals Collection",
-    eyebrow: "Structured Workspaces",
-    title: "Journals",
-    intro: "Mindful prompt templates and tactical focus tools designed for modern habits.",
-    colorA: "#f97316",
-    colorB: "#ea580c",
-    books: [
-      { title: "The 5-Minute Morning Journal", link: "https://kdpbook.link/for/B0GKY8Z4TB", subtitle: "Edition", blurb: "Gratitude - Daily Intention - Daily Affirmation", image: "images/The5MinuteMorningJournal.png" },
-      { title: "The 5-Minute Before Bed Journal", link: "https://kdpbook.link/for/B0GX9BSJWZ", subtitle: "Edition", blurb: "Gratitude - Reflection - Peace", image: "images/The5MinuteBeforeBedJournal.png" }
+    subsections: [
+      {
+        title: "Keepsake & Family Legacy Editions",
+        intro: "Blank lined keepsake journals crafted for loved ones, milestones, and family memories.",
+        books: [
+          { title: "Best Brother Diary", link: "https://kdpbook.link/for/B0H7M5XBGN", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Brothers", image: "images/BestBrother.png" },
+          { title: "Best Wife Diary", link: "https://kdpbook.link/for/B0H7MQLQ2C", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Wifes", image: "images/BestWife.png" },
+          { title: "Mother's Day Diary", link: "https://kdpbook.link/for/B0H6SM91XC", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Moms", image: "images/HappyMothersDay.png" },
+          { title: "Best Husband Diary", link: "https://kdpbook.link/for/B0H7MTZJR3", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Husbands", image: "images/BestHusband.png" },
+          { title: "Best Father Diary", link: "https://kdpbook.link/for/B0H7MJ3JMF", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Fathers", image: "images/BestFather.png" },
+          { title: "Best Sister Diary", link: "https://kdpbook.link/for/B0H7MC81CX", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Sisters", image: "images/BestSister.png" },
+          { title: "Father's Day Diary", link: "https://kdpbook.link/for/B0H7MFWSZJ", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Dads", image: "images/HappyFathersDay.png" },
+          { title: "Best Mother Diary", link: "https://kdpbook.link/for/B0H7MFFKS3", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Mothers", image: "images/BestMother.png" },
+          { title: "Best Daughter Diary", link: "https://kdpbook.link/for/B0H8DBKD5C", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Daughter", image: "images/BestDaughter.png" },
+          { title: "Best Son Diary", link: "https://kdpbook.link/for/B0H83T55JQ", subtitle: "Edition", blurb: "A Notebook for Memories, Milestones, and Family Legacy | Blank Lined Keepsake Journal for Son", image: "images/BestSon.png" },
+          { title: "He Knew He Would", link: "https://kdpbook.link/for/B0GWC65TLB", subtitle: "Edition", blurb: "Diary for him", image: "images/HeKnewHeWould.png" },
+          { title: "She Believed She Could", link: "https://kdpbook.link/for/B0GVJM3YGC", subtitle: "Edition", blurb: "Diary for her", image: "images/SheBelievedSheCould.png" }
+        ]
+      }
     ]
   }
 };
@@ -646,19 +810,18 @@ function triggerViewRefresh() {
   view.classList.add("view-animate");
 }
 
-function bookRow(book, collection) {
+function bookRow(book, collection, subsection) {
   const blurb = book.blurb || "A clean structured workspace for plans, milestones, and personal focus.";
-  const label = book.vol || book.subtitle || collection.label;
+  const label = book.vol || book.subtitle || (subsection && subsection.title ? subsection.title : "");
   const coverSrc = book.image || "logo.png";
-  const diaryClass = collection.isDiaryCollection ? 'is-diary' : '';
   return `
-    <article class="book-row ${diaryClass}">
-      <div class="book-indicator" style="background: linear-gradient(180deg, ${collection.colorA}, ${collection.colorB})" aria-hidden="true"></div>
+    <article class="book-card">
+      <div class="book-card-indicator" style="background: linear-gradient(90deg, ${collection.colorA}, ${collection.colorB})" aria-hidden="true"></div>
       <div class="book-cover-container-fixed">
         <img class="book-cover-thumb" src="${coverSrc}" alt="${book.title} Cover Mockup">
       </div>
       <div class="book-main">
-        <div class="meta">${label} &ensp;·&ensp; ${collection.label}</div>
+        <div class="meta">${label}${label ? " · " : ""}${collection.title}</div>
         <h3>${book.title}</h3>
         <p>${blurb}</p>
       </div>
@@ -669,9 +832,8 @@ function bookRow(book, collection) {
 
 function showcaseCard(item) {
   const coverSrc = item.book.image || "logo.png";
-  const diaryClass = item.collection.isDiaryCollection ? 'is-diary' : '';
   return `
-    <article class="showcase-card ${diaryClass}">
+    <article class="showcase-card">
       <span class="showcase-badge" style="color: ${item.collection.colorA}">${item.collection.title}</span>
       <div class="showcase-cover-wrapper">
         <img class="showcase-cover-img" src="${coverSrc}" alt="${item.book.title} Cover Display">
@@ -686,6 +848,7 @@ function showcaseCard(item) {
 }
 
 function editorialSpreadCard(num, key, collection) {
+  const intro = collection.intro || (collection.subsections[0] ? collection.subsections[0].intro : "Explore our curated collection");
   return `
     <article class="editorial-spread" onclick="navigate('${key}')" role="button" tabindex="0">
       <div class="spread-num" style="color: var(--ink); opacity: 0.15;">${num}</div>
@@ -693,7 +856,7 @@ function editorialSpreadCard(num, key, collection) {
         <div class="spread-accent" style="background: linear-gradient(to bottom, ${collection.colorA}, ${collection.colorB})"></div>
         <h3>${collection.title}</h3>
       </div>
-      <p>${collection.intro}</p>
+      <p>${intro}</p>
       <span class="editorial-link">Explore Shelf Collection →</span>
     </article>
   `;
@@ -702,14 +865,15 @@ function editorialSpreadCard(num, key, collection) {
 function getFeaturedBooks() {
   const targets = [
     { title: "When We First Collided", key: "romance" },
-    { title: "How to Drive Manifestation", key: "levelup" },
-    { title: "The 5-Minute Morning Journal", key: "journals" },
+    { title: "Rebooting Raya", key: "indian" },
+    { title: "How to Drive Manifestation", key: "selfhelp" },
     { title: "Best Sister Diary", key: "diaries" }
   ];
   
   return targets.map(t => {
-    const bookMatch = DATA[t.key].books.find(b => b.title.toLowerCase() === t.title.toLowerCase());
-    return bookMatch ? { book: bookMatch, collection: DATA[t.key] } : null;
+    const collection = DATA[t.key];
+    const bookMatch = collection.subsections.flatMap(sub => sub.books).find(b => b.title.toLowerCase() === t.title.toLowerCase());
+    return bookMatch ? { book: bookMatch, collection: collection } : null;
   }).filter(item => item !== null);
 }
 
@@ -748,9 +912,9 @@ function renderHome() {
       </div>
       <div class="collection-grid">
         ${editorialSpreadCard("01", "romance", DATA.romance)}
-        ${editorialSpreadCard("02", "levelup", DATA.levelup)}
-        ${editorialSpreadCard("03", "diaries", DATA.diaries)}
-        ${editorialSpreadCard("04", "journals", DATA.journals)}
+        ${editorialSpreadCard("02", "indian", DATA.indian)}
+        ${editorialSpreadCard("03", "selfhelp", DATA.selfhelp)}
+        ${editorialSpreadCard("04", "diaries", DATA.diaries)}
       </div>
     </section>
   `;
@@ -758,54 +922,76 @@ function renderHome() {
 
 function allBooks() {
   return [
-    ...DATA.romance.books.map(book => ({ book, collection: DATA.romance })),
-    ...DATA.levelup.books.map(book => ({ book, collection: DATA.levelup })),
-    ...DATA.diaries.books.map(book => ({ book, collection: DATA.diaries })),
-    ...DATA.journals.books.map(book => ({ book, collection: DATA.journals }))
+    ...DATA.romance.subsections.flatMap(sub => sub.books.map(book => ({ book, collection: DATA.romance, subsection: sub }))),
+    ...DATA.indian.subsections.flatMap(sub => sub.books.map(book => ({ book, collection: DATA.indian, subsection: sub }))),
+    ...DATA.selfhelp.subsections.flatMap(sub => sub.books.map(book => ({ book, collection: DATA.selfhelp, subsection: sub }))),
+    ...DATA.diaries.subsections.flatMap(sub => sub.books.map(book => ({ book, collection: DATA.diaries, subsection: sub })))
   ];
 }
 
-function shelfSection(title, intro, items = allBooks()) {
-  return `
-    <section>
-      <div class="section-head">
-        <div>
-          <h2>${title}</h2>
-          <p>${intro}</p>
+/* Master Shelf renderer */
+function shelfSection(title, intro, collection, isDetail = false) {
+  let html = ``;
+  
+  if (!isDetail) {
+    html += `
+      <section style="margin-bottom: 56px;">
+        <div class="section-head">
+          <div>
+            <h2>${title}</h2>
+            ${intro ? `<p>${intro}</p>` : ''}
+          </div>
+          <div class="count">${collection.subsections.reduce((sum, sub) => sum + sub.books.length, 0)} titles</div>
+        </div>`;
+  }
+
+  collection.subsections.forEach(subsection => {
+    const showSubHeader = subsection.title && (!isDetail || collection.subsections.length > 1 || subsection.title !== collection.title);
+    
+    html += `<div style="margin-bottom: 48px;">
+      ${showSubHeader ? `
+        <div class="subsection-header" style="border-left-color: ${collection.colorB};">
+          <h3 class="subsection-title">${subsection.title}</h3>
+          ${subsection.intro ? `<p class="subsection-intro">${subsection.intro}</p>` : ''}
         </div>
-        <div class="count">${items.length} titles</div>
-      </div>
+      ` : ''}
       <div class="books-grid">
-        ${items.map(item => bookRow(item.book, item.collection)).join("")}
+        ${subsection.books.map(book => bookRow(book, collection, subsection)).join("")}
       </div>
-    </section>
-  `;
+    </div>`;
+  });
+  
+  if (!isDetail) html += `</section>`;
+  return html;
 }
 
 function renderShelf(filter = "all") {
   setActive("shelf");
-  const items = filter === "romance"
-    ? DATA.romance.books.map(book => ({ book, collection: DATA.romance }))
-    : filter === "levelup"
-      ? DATA.levelup.books.map(book => ({ book, collection: DATA.levelup }))
-      : filter === "diaries"
-        ? DATA.diaries.books.map(book => ({ book, collection: DATA.diaries }))
-        : filter === "journals"
-          ? DATA.journals.books.map(book => ({ book, collection: DATA.journals }))
-          : allBooks();
+  const collections = {
+    all: [DATA.romance, DATA.indian, DATA.selfhelp, DATA.diaries],
+    romance: [DATA.romance],
+    indian: [DATA.indian],
+    selfhelp: [DATA.selfhelp],
+    diaries: [DATA.diaries]
+  };
+  const selectedCollections = collections[filter] || collections.all;
+
+  let shelves = selectedCollections.map(collection => 
+    shelfSection(collection.title, collection.intro, collection, false)
+  ).join("");
 
   view.innerHTML = `
     <section class="shelf-layout">
       <aside class="filter-panel">
         <h2>Shelf</h2>
         <button class="${filter === "all" ? "active" : ""}" onclick="renderShelf('all')">All Books</button>
-        <button class="${filter === "romance" ? "active" : ""}" onclick="renderShelf('romance')">Romance Trilogy - When We</button>
-        <button class="${filter === "levelup" ? "active" : ""}" onclick="renderShelf('levelup')">Level Up Series</button>
+        <button class="${filter === "romance" ? "active" : ""}" onclick="renderShelf('romance')">Romance</button>
+        <button class="${filter === "indian" ? "active" : ""}" onclick="renderShelf('indian')">Indian</button>
+        <button class="${filter === "selfhelp" ? "active" : ""}" onclick="renderShelf('selfhelp')">Self Help</button>
         <button class="${filter === "diaries" ? "active" : ""}" onclick="renderShelf('diaries')">Diaries</button>
-        <button class="${filter === "journals" ? "active" : ""}" onclick="renderShelf('journals')">Journals</button>
       </aside>
       <div>
-        ${shelfSection(filter === "all" ? "All Books" : DATA[filter].title, "Browse individual publications, specs, and online distribution channels.", items)}
+        ${shelves}
       </div>
     </section>
   `;
@@ -814,18 +1000,17 @@ function renderShelf(filter = "all") {
 function renderCollection(key) {
   const collection = DATA[key];
   setActive(key);
-  const items = collection.books.map(book => ({ book, collection }));
   view.innerHTML = `
     <div class="back" onclick="navigate('home')" role="button" tabindex="0">
-      <svg viewBox="0 0 24 24" style="fill: #ffffff; width: 14px; height: 14px; vertical-align: middle; margin-right: 4px;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>← Return to Main Library</div>
+      <svg viewBox="0 0 24 24" style="fill: var(--ink); width: 14px; height: 14px; vertical-align: middle; margin-right: 6px;"><path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/></svg>Return to Library</div>
     <section class="detail-hero">
       <div>
         <h1>${collection.title}</h1>
-        <p class="lead">${collection.intro}</p>
+        ${collection.intro ? `<p class="lead">${collection.intro}</p>` : ''}
       </div>
-      <div class="count">${collection.books.length} items</div>
+      <div class="count">${collection.subsections.reduce((sum, sub) => sum + sub.books.length, 0)} items</div>
     </section>
-    ${shelfSection(collection.label, "Select a title below to view availability, structural descriptions, and ordering platforms.", items)}
+    ${shelfSection(collection.title, "", collection, true)}
   `;
 }
 
@@ -833,9 +1018,38 @@ function router() {
   triggerViewRefresh();
   const route = location.hash.replace("#/", "") || "home";
   if (route === "shelf") renderShelf();
-  else if (route === "romance" || route === "levelup" || route === "diaries" || route === "journals") renderCollection(route);
+  else if (route === "romance" || route === "indian" || route === "selfhelp" || route === "diaries") renderCollection(route);
   else renderHome();
   window.scrollTo(0, 0);
+}
+
+/* PWA App Install Banner trigger */
+let deferredPrompt = null;
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault();
+  deferredPrompt = e;
+  const banner = document.getElementById('pwaBanner');
+  if (banner && !localStorage.getItem('pwaPromptDismissed')) {
+    banner.style.display = 'flex';
+  }
+});
+
+function installPWA() {
+  if (deferredPrompt) {
+    deferredPrompt.prompt();
+    deferredPrompt.userChoice.then(() => {
+      deferredPrompt = null;
+      closePwaBanner();
+    });
+  } else {
+    alert("To add this site as an app:\n- On Safari/iOS: Tap 'Share' > 'Add to Home Screen'\n- On Android/Chrome: Tap menu (⋮) > 'Install app' / 'Add to Home screen'");
+  }
+}
+
+function closePwaBanner() {
+  const banner = document.getElementById('pwaBanner');
+  if (banner) banner.style.display = 'none';
+  localStorage.setItem('pwaPromptDismissed', 'true');
 }
 
 window.addEventListener("hashchange", router);
