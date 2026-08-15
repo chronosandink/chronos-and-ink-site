@@ -5,6 +5,20 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Chronos & Ink Shelf</title>
 
+<!-- Open Graph / Instagram & Facebook Preview Meta Tags -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://chronosandink.github.io/chronos-and-ink-site/">
+<meta property="og:title" content="Chronos & Ink — Books & Archives">
+<meta property="og:description" content="Emotional romance novels, tactical productivity guides, and structured keepsake diaries.">
+<meta property="og:image" content="https://chronosandink.github.io/chronos-and-ink-site/logo.png">
+
+<!-- Twitter / In-App Browser Meta Tags -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:url" content="https://chronosandink.github.io/chronos-and-ink-site/">
+<meta name="twitter:title" content="Chronos & Ink — Books & Archives">
+<meta name="twitter:description" content="write · preserve · inspire">
+<meta name="twitter:image" content="https://chronosandink.github.io/chronos-and-ink-site/logo.png">
+
 <!-- Favicon & PWA / App Icons -->
 <link rel="icon" type="image/png" href="logo.png">
 <link rel="apple-touch-icon" href="logo.png">
@@ -671,7 +685,7 @@
     </button>
     <nav class="nav" id="mainNav" aria-label="Primary">
       <button data-nav="home" onclick="handleNav('home')">Home</button>
-      <button data-nav="shelf" onclick="renderShelf('all')">Shelf</button>
+      <button data-nav="shelf" onclick="handleNav('shelf')">Shelf</button>
       <button data-nav="romance" onclick="handleNav('romance')">Romance</button>
       <button data-nav="indian" onclick="handleNav('indian')">Indian</button>
       <button data-nav="selfhelp" onclick="handleNav('selfhelp')">Self Help</button>
